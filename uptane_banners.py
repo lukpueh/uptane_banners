@@ -101,7 +101,7 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
   elif banner_width == cols:
     left_fill = 0
   else:
-    left_fill = (cols - banner_width) / 2
+    left_fill = int((cols - banner_width) / 2)
 
   clear_screen()
 
