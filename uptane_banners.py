@@ -19,6 +19,7 @@
 """
 import os
 import time
+import textwrap
 from subprocess import Popen, call, PIPE
 
 # Bash font color escape sequences
@@ -59,8 +60,13 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
     text=False):
   """
   <Purpose>
-    Clears current terminal window and prints passed banner array.
-    The passed banner is aligned horizontally.
+    Clears current terminal window and prints passed banner array and
+    optionally passed text.
+    The banner and the text centered horizontally.
+
+    Font color and background color are ignored for the text. The text is
+    framed with the background color.
+
 
   <Arguments>
     banner_array:
@@ -72,7 +78,6 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
     color: (optional)
       If passed, fills the banner font. Use one of the constants above.
 
-
     color_bg: (optional)
       If passed, fills the banner background. Use one of the constants above.
 
@@ -80,7 +85,8 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
       Text to be displayed below the banner (NOT YET IMPLEMENTED)
 
   <Exceptions>
-    Exception if banner width (longest element of banner_array)
+    Exception if banner width  exceeds terminal width
+    Exception if banner height plus text height exceed terminal height
 
   <Side Effects>
     Clears terminal and prints passed banner to terminal
@@ -90,6 +96,7 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
   """
 
   rows, cols = get_screen_size()
+  content_height = 0
 
   # Get left padding
   banner_width = len(max(banner_array, key=len))
@@ -120,6 +127,41 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
 
     print(output)
 
+  # Text can be a list or an \n separated string
+  text_array = []
+  if text:
+    margin_len = 10
+    if not isinstance(text, list):
+      text = text.split("\n")
+
+    # Wrap line if it is too long
+    for line in text:
+      text_array += textwrap.wrap(line, cols - 2 * margin_len)
+
+    # Raise exception if banner and tex exceed terminal height
+    if len(banner_array) + len(text_array) > rows:
+      raise Exception("Text exceeds terminal height.")
+
+    for output in text_array:
+      output_width = cols - 2 * margin_len
+      margin = " " * margin_len
+
+      if color_bg:
+        margin = (color_bg + margin + RESET_COLOR)
+
+      output = "{margin}{output:^{width}}{margin}".format(
+          margin=margin,
+          output=output,
+          width=output_width)
+
+      print(output)
+
+
+  # Fill bottom if color_bg is specified
+  if color_bg:
+    for i in range(rows - (len(banner_array) + len(text_array)) - 1):
+      print(color_bg + cols * " " + RESET_COLOR)
+
   if show_for:
     time.sleep(show_for)
     clear_screen()
@@ -133,12 +175,22 @@ BANNER_COMPROMISED = load_banner("ascii/compromised.txt")
 BANNER_REPLAY = load_banner("ascii/replay.txt")
 
 def main():
-  print_banner(BANNER_UPDATED, color=GREEN, color_bg=GRAY_BG, show_for=3)
-  print_banner(BANNER_DEFENDED, color=YELLOW, color_bg=BLUE_BG, show_for=3)
-  print_banner(BANNER_FROZEN, color=YELLOW, color_bg=BLUE_BG, show_for=3)
-  print_banner(BANNER_COMPROMISED, color=RED, color_bg=BLACK_BG, show_for=3)
-  print_banner(BANNER_HACKED, color=RED, color_bg=BLACK_BG, show_for=3)
-  print_banner(BANNER_REPLAY, color=RED, color_bg=BLACK_BG, show_for=3)
+
+  text = \
+"""Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidattttat non
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""
+
+  print_banner(BANNER_UPDATED, color=GREEN, color_bg=GRAY_BG, show_for=3, text=text)
+  print_banner(BANNER_DEFENDED, color=YELLOW, show_for=3, text=text)
+  print_banner(BANNER_FROZEN, color=YELLOW, color_bg=BLUE_BG, show_for=3, text=text)
+  print_banner(BANNER_COMPROMISED, color=RED, color_bg=BLACK_BG, show_for=3, text=text)
+  print_banner(BANNER_HACKED, color=RED, color_bg=BLACK_BG, show_for=3, text=text)
+  print_banner(BANNER_REPLAY, color=RED, color_bg=BLACK_BG, show_for=3, text=text)
+
+
 
 if __name__ == "__main__":
   main()
