@@ -82,10 +82,13 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
       If passed, fills the banner background. Use one of the constants above.
 
     text: (optional)
-      Text to be displayed below the banner (NOT YET IMPLEMENTED)
+      Text to be displayed below the banner. Can be a string or a list.
+      If it is a string the lines are split at "\n". Additionally the text
+      is wrapped to fit the width of the current terminal minus a hardcoded
+      margin.
 
   <Exceptions>
-    Exception if banner width  exceeds terminal width
+    Exception if banner width exceeds terminal width
     Exception if banner height plus text height exceed terminal height
 
   <Side Effects>
