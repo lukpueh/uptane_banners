@@ -59,37 +59,37 @@ def load_banner(file_path):
 
 def print_banner(banner_array, show_for=False, color=False, color_bg=False,
     text=False):
-    """
-    <Purpose>
-      Clears current terminal window and prints passed banner array.
-      The passed banner is aligned horizontally.
+  """
+  <Purpose>
+    Clears current terminal window and prints passed banner array.
+    The passed banner is aligned horizontally.
 
-    <Arguments>
-      banner_array:
-        Array of string (lines to print)
+  <Arguments>
+    banner_array:
+      Array of string (lines to print)
 
-      show_for: (optional)
-        If passed, sleep for given time (in seconds) and then clears the screen.
+    show_for: (optional)
+      If passed, sleep for given time (in seconds) and then clears the screen.
 
-      color: (optional)
-        If passed, fills the banner font. Use one of the constants above.
+    color: (optional)
+      If passed, fills the banner font. Use one of the constants above.
 
 
-      color_bg: (optional)
-        If passed, fills the banner background. Use one of the constants above.
+    color_bg: (optional)
+      If passed, fills the banner background. Use one of the constants above.
 
-      text: (optional)
-        Text to be displayed below the banner (NOT YET IMPLEMENTED)
+    text: (optional)
+      Text to be displayed below the banner (NOT YET IMPLEMENTED)
 
-    <Exceptions>
-      Exception if banner width (longest element of banner_array)
+  <Exceptions>
+    Exception if banner width (longest element of banner_array)
 
-    <Side Effects>
-      Clears terminal and prints passed banner to terminal
+  <Side Effects>
+    Clears terminal and prints passed banner to terminal
 
-    <Returns>
-      None
-    """
+  <Returns>
+    None
+  """
 
   rows, cols = get_screen_size()
 
@@ -115,8 +115,7 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
       output = color + output
 
     if color_bg:
-      output = color_bg + out
-      put
+      output = color_bg + output
 
     if color or color_bg:
       output += RESET_COLOR
