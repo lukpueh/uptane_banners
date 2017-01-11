@@ -51,10 +51,8 @@ def clear_screen():
 def load_banner(file_path):
   """Loads text from file, appends each line to an array and returns array. """
   banner = open(file_path, 'r').read()
-  banner_array = []
-  for line in banner.split("\n"):
-    banner_array.append(line)
-  return banner_array
+  return banner.split("\n")
+
 
 
 def print_banner(banner_array, show_for=False, color=False, color_bg=False,
