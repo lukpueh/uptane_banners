@@ -13,7 +13,7 @@
   See LICENSE for licensing information.
 
 <Purpose>
-  Provides functions to read text files (e.g. ascii art) and print them
+  Provides functions to read text files (e.g. ASCII art) and print them
   horizontally centered to a bash terminal.
 
 """
@@ -55,7 +55,7 @@ def get_screen_size():
 
 
 def clear_screen():
-  """Calls bash command `clear`, clears the current temrinal (blocking call). """
+  """Calls bash command `clear`, clears the current terminal (blocking call). """
   call('clear')
 
 
@@ -94,12 +94,12 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
     text: (optional)
       Text to be displayed below the banner. Can be a string or a list.
       If it is a string the lines are split at "\n". Additionally the text
-      is wrapped to fit the width of the current terminal minus a hardcoded
+      is wrapped to fit the width of the current terminal minus a hard-coded
       margin.
 
     sound: (optional)
-      If passed and if there a command line player cand be found,
-      plays sound in subprocess (non blocking).
+      If passed and one of the required command line player can be found,
+      the sound is played in a subprocess at the passed path (non blocking).
 
   <Exceptions>
     Exception if banner width exceeds terminal width
@@ -158,7 +158,7 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
     for line in text:
       text_array += textwrap.wrap(line, cols - 2 * margin_len)
 
-    # Raise exception if banner and tex exceed terminal height
+    # Raise exception if banner and text exceed terminal height
     if len(banner_array) + len(text_array) > rows:
       raise Exception("Text exceeds terminal height.")
 

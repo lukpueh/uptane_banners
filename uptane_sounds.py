@@ -7,7 +7,7 @@
   Lukas Puehringer <lukas.puehringer@nyu.edu>
 
 <Started>
-  Jan 10, 2017
+  Jan 12, 2017
 
 <Copyright>
   See LICENSE for licensing information.
