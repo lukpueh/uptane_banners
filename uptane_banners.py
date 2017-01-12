@@ -193,6 +193,7 @@ BANNER_FROZEN = load_banner("ascii/frozen.txt")
 BANNER_HACKED = load_banner("ascii/hacked.txt")
 BANNER_COMPROMISED = load_banner("ascii/compromised.txt")
 BANNER_REPLAY = load_banner("ascii/replay.txt")
+BANNER_NO_UPDATE_NEEDED = load_banner("ascii/no_update_needed.txt")
 
 def main():
 
@@ -208,6 +209,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""
   print_banner(BANNER_COMPROMISED, color=RED, color_bg=BLACK_BG, show_for=3, sound=SATAN)
   print_banner(BANNER_HACKED, color=RED, color_bg=BLACK_BG, show_for=3, text=text, sound=DOOMED)
   print_banner(BANNER_REPLAY, color=RED, color_bg=BLACK_BG, show_for=3, sound=WITCH)
+  print_banner(BANNER_NO_UPDATE_NEEDED, color=RED, color_bg=BLACK_BG, show_for=3)
 
 
 
