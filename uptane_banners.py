@@ -13,13 +13,15 @@
   See LICENSE for licensing information.
 
 <Purpose>
-  Provides functions to read text files (e.g. ascii art) and print them
+  Provides functions to read text files (e.g. ASCII art) and print them
   horizontally centered to a bash terminal.
 
 """
 import os
 import time
 import textwrap
+from uptane_sounds import (play,
+  TADA, WON, LOST, LOST2, SATAN, WITCH, DOOMED, ICE, ICE2)
 from subprocess import Popen, call, PIPE
 
 # Bash font color escape sequences
@@ -53,7 +55,7 @@ def get_screen_size():
 
 
 def clear_screen():
-  """Calls bash command `clear`, clears the current temrinal (blocking call). """
+  """Calls bash command `clear`, clears the current terminal (blocking call). """
   call('clear')
 
 
@@ -65,7 +67,7 @@ def load_banner(file_path):
 
 
 def print_banner(banner_array, show_for=False, color=False, color_bg=False,
-    text=False):
+    text=False, sound=False):
   """
   <Purpose>
     Clears current terminal window and prints passed banner array and
@@ -92,8 +94,12 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
     text: (optional)
       Text to be displayed below the banner. Can be a string or a list.
       If it is a string the lines are split at "\n". Additionally the text
-      is wrapped to fit the width of the current terminal minus a hardcoded
+      is wrapped to fit the width of the current terminal minus a hard-coded
       margin.
+
+    sound: (optional)
+      If passed and one of the required command line player can be found,
+      the sound is played in a subprocess at the passed path (non blocking).
 
   <Exceptions>
     Exception if banner width exceeds terminal width
@@ -105,6 +111,9 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
   <Returns>
     None
   """
+
+  if sound:
+    play(sound)
 
   rows, cols = get_screen_size()
   content_height = 0
@@ -149,7 +158,7 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
     for line in text:
       text_array += textwrap.wrap(line, cols - 2 * margin_len)
 
-    # Raise exception if banner and tex exceed terminal height
+    # Raise exception if banner and text exceed terminal height
     if len(banner_array) + len(text_array) > rows:
       raise Exception("Text exceeds terminal height.")
 
@@ -191,15 +200,14 @@ def main():
 """Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidattttat non
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""
 
-  print_banner(BANNER_UPDATED, color=GREEN, show_for=3, text=text)
-  print_banner(BANNER_DEFENDED, color=BLUE, color_bg=YELLOW_BG, show_for=3, text=text)
-  print_banner(BANNER_FROZEN, color=CYAN, color_bg=GRAY_BG, show_for=3, text=text)
-  print_banner(BANNER_COMPROMISED, color=RED, color_bg=BLACK_BG, show_for=3, text=text)
-  print_banner(BANNER_HACKED, color=RED, color_bg=BLACK_BG, show_for=3, text=text)
-  print_banner(BANNER_REPLAY, color=RED, color_bg=BLACK_BG, show_for=3, text=text)
+  print_banner(BANNER_UPDATED, color=GREEN, show_for=3, text=text, sound=WON)
+  print_banner(BANNER_DEFENDED, color=BLUE, color_bg=YELLOW_BG, show_for=3, text=text, sound=TADA)
+  print_banner(BANNER_FROZEN, color=CYAN, color_bg=GRAY_BG, show_for=3, sound=ICE)
+  print_banner(BANNER_COMPROMISED, color=RED, color_bg=BLACK_BG, show_for=3, sound=SATAN)
+  print_banner(BANNER_HACKED, color=RED, color_bg=BLACK_BG, show_for=3, text=text, sound=DOOMED)
+  print_banner(BANNER_REPLAY, color=RED, color_bg=BLACK_BG, show_for=3, sound=WITCH)
 
 
 
