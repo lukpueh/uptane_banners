@@ -84,6 +84,8 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
 
     show_for: (optional)
       If passed, sleep for given time (in seconds) and then clears the screen.
+      Note, if a sound is passed as well, the show_for time is added to the
+      duration of the sound
 
     color: (optional)
       If passed, fills the banner font. Use one of the constants above.
@@ -99,7 +101,7 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
 
     sound: (optional)
       If passed and one of the required command line player can be found,
-      the sound is played in a subprocess at the passed path (non blocking).
+      the sound is played in a subprocess at the passed path (blocking).
 
   <Exceptions>
     Exception if banner width exceeds terminal width
@@ -111,9 +113,6 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
   <Returns>
     None
   """
-
-  if sound:
-    play(sound)
 
   rows, cols = get_screen_size()
   content_height = 0
@@ -135,7 +134,6 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
     right_fill = cols - left_fill - len(line)
     # Right and left fill with spaces (for alignment and background color)
     output = (left_fill * " ") + line + (right_fill * " ")
-
     if color:
       output = color + output
 
@@ -182,6 +180,9 @@ def print_banner(banner_array, show_for=False, color=False, color_bg=False,
     for i in range(rows - (len(banner_array) + len(text_array)) - 1):
       print(color_bg + cols * " " + RESET_COLOR)
 
+  if sound:
+    play(sound, True)
+
   if show_for:
     time.sleep(show_for)
     clear_screen()
@@ -203,12 +204,12 @@ cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat noncil
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidattttat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum."""
 
-  print_banner(BANNER_UPDATED, color=GREEN, show_for=3, text=text, sound=WON)
-  print_banner(BANNER_DEFENDED, color=BLUE, color_bg=YELLOW_BG, show_for=3, text=text, sound=TADA)
-  print_banner(BANNER_FROZEN, color=CYAN, color_bg=GRAY_BG, show_for=3, sound=ICE)
-  print_banner(BANNER_COMPROMISED, color=RED, color_bg=BLACK_BG, show_for=3, sound=SATAN)
-  print_banner(BANNER_HACKED, color=RED, color_bg=BLACK_BG, show_for=3, text=text, sound=DOOMED)
-  print_banner(BANNER_REPLAY, color=RED, color_bg=BLACK_BG, show_for=3, sound=WITCH)
+  print_banner(BANNER_UPDATED, color=GREEN, text=text, sound=WON)
+  print_banner(BANNER_DEFENDED, color=BLUE, color_bg=YELLOW_BG, text=text, sound=TADA)
+  print_banner(BANNER_FROZEN, color=CYAN, color_bg=GRAY_BG, sound=ICE)
+  print_banner(BANNER_COMPROMISED, color=RED, color_bg=BLACK_BG, sound=SATAN)
+  print_banner(BANNER_HACKED, color=RED, color_bg=BLACK_BG, text=text, sound=DOOMED)
+  print_banner(BANNER_REPLAY, color=RED, color_bg=BLACK_BG, sound=WITCH)
   print_banner(BANNER_NO_UPDATE_NEEDED, color=RED, color_bg=BLACK_BG, show_for=3)
 
 
